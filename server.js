@@ -19,4 +19,7 @@ app.get('/', (req, res) => {
   res.render('index', locals);
 });
 
-app.listen(3000, () => console.log('Example app is listening on port 3000.'));
+const port = process.env.PORT || 3000;
+app.listen(port, () =>
+  console.log(`Example app is listening on port ${port}.`)
+);
