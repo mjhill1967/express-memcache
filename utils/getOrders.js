@@ -36,7 +36,7 @@ try {
   });
   tickets = response.result.orders;
   const data = [];
-  var ticketData = [];
+  var ticketData = {};
   let x = 0;
   if ( tickets.length > -1 ) {
     var txtOutput = '';

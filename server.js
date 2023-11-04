@@ -58,7 +58,7 @@ app.use(
 );
 
 app.use(cors());
-
+app.use(express.json());
 app.use(rateLimit(config.rate));
 
 app.use(
@@ -81,22 +81,22 @@ app.get("/login", (req, res) => {
   }
 });
 
-app.get("/protected", protect, (req, res) => {
-  const { name = "user" } = req.query;
-  res.send(`Hello ${name}!`);
+app.get("/status", (request, response) => {
+  const status = {
+     "Status": "Running"
+  };
+  
+  response.json(status);
 });
 
 app.get("/orders", protect, async (req, res, next) => {
   console.log('get /orders');
   orders.then(data => {
-    console.log('Returned data.......');
     console.log(data);
-    var data_str = JSON.stringify(data);
-    res.send(`Orders: ${data_str}`);
+    res.json(data);
   })
   .catch(err => {
-    console.log(err);
-    res.send(`Error: ${err}`);
+    res.json(err);
   })
 });
 
