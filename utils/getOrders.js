@@ -7,12 +7,21 @@ const client = new Client({
   environment: Environment.Production,
 });
 
-exports.getOrders = async ( customerId ) => { 
-
+exports.getOrders = async ( params ) => { 
+console.log( params );
+if (params.location == undefined ) {
+  params.location = 'LJZAMNQFK7X0V';  
+}
+if (params.startAt == undefined ) {
+  params.startAt = '2023-04-15T09:00:00+00:00';  
+}
+if (params.endAt == undefined ) {
+  params.endAt = '2023-04-15T23:00:00+00:00';  
+}
 try {
   const response = await client.ordersApi.searchOrders({
     locationIds: [
-      'LJZAMNQFK7X0V'
+      params.location
     ],
     query: {
       filter: {
@@ -23,8 +32,8 @@ try {
         },
         dateTimeFilter: {
           closedAt: {
-            startAt: '2023-04-15T09:00:00+00:00',
-            endAt: '2023-04-15T23:00:00+00:00'
+            startAt: params.startAt,
+            endAt: params.endAt
           }
         }
       },

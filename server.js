@@ -19,8 +19,6 @@ const port = config.serverPort;
 const secret = config.sessionSecret;
 const store = new session.MemoryStore();
 
-const orders = square.getOrders(1);
-
 console.log('Server app');
 //app.set('view engine', 'ejs');
 
@@ -59,6 +57,7 @@ app.use(
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(rateLimit(config.rate));
 
 app.use(
@@ -91,8 +90,10 @@ app.get("/status", (request, response) => {
 
 app.get("/orders", protect, async (req, res, next) => {
   console.log('get /orders');
+  console.log( req.query );
+  const orders = square.getOrders( req.query );
+
   orders.then(data => {
-    console.log(data);
     res.json(data);
   })
   .catch(err => {
