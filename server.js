@@ -9,10 +9,8 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 const responseTime = require("response-time");
 const winston = require("winston");
 const config = require("./config");
-
-const router = express.Router();
 const square = require('./utils/getOrders');
-
+// const orderData = require('./routers/ordersrouter'); 
 // configure the application
 const app = express();
 const port = config.serverPort;
@@ -74,9 +72,9 @@ app.get("/login", (req, res) => {
 
   if (!authenticated) {
     req.session.authenticated = true;
-    res.send("Successfully authenticated");
+    res.status(200).send("Successfully authenticated");
   } else {
-    res.send("Already authenticated");
+    res.status(200).send("Already authenticated");
   }
 });
 
@@ -85,7 +83,7 @@ app.get("/status", (request, response) => {
      "Status": "Running"
   };
   
-  response.json(status);
+  response.status(200).json(status);
 });
 
 app.get("/orders", protect, async (req, res, next) => {
@@ -94,11 +92,11 @@ app.get("/orders", protect, async (req, res, next) => {
   const orders = square.getOrders( req.query );
 
   orders.then(data => {
-    res.json(data);
+    res.status(200).json(data);
   })
   .catch(err => {
-    res.json(err);
-  })
+    res.status(500).json(err);
+  })  
 });
 
 Object.keys(config.proxies).forEach((path) => {
@@ -109,7 +107,7 @@ Object.keys(config.proxies).forEach((path) => {
 
 app.get("/logout", protect, (req, res) => {
   req.session.destroy(() => {
-    res.send("Successfully logged out");
+    res.status(200).send("Successfully logged out");
   });
 });
 
