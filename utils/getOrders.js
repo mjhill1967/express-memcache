@@ -13,10 +13,10 @@ if (params.location == undefined ) {
   params.location = 'LJZAMNQFK7X0V';  
 }
 if (params.startAt == undefined ) {
-  params.startAt = '2023-04-15T09:00:00+00:00';  
+  params.startAt = '2023-11-04T09:00:00+00:00';  
 }
 if (params.endAt == undefined ) {
-  params.endAt = '2023-04-15T23:00:00+00:00';  
+  params.endAt = '2023-11-04T23:59:00+00:00';  
 }
 try {
   const response = await client.ordersApi.searchOrders({
