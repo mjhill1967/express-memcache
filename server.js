@@ -72,9 +72,9 @@ app.get("/login", (req, res) => {
 
   if (!authenticated) {
     req.session.authenticated = true;
-    res.status(200).send("Successfully authenticated");
+    res.status(200).json("Successfully authenticated");
   } else {
-    res.status(200).send("Already authenticated");
+    res.status(200).json("Already authenticated");
   }
 });
 
@@ -107,7 +107,7 @@ Object.keys(config.proxies).forEach((path) => {
 
 app.get("/logout", protect, (req, res) => {
   req.session.destroy(() => {
-    res.status(200).send("Successfully logged out");
+    res.status(200).json("Successfully logged out");
   });
 });
 
