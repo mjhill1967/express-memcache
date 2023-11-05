@@ -86,7 +86,7 @@ app.get("/status", (request, response) => {
   response.status(200).json(status);
 });
 
-app.get("/orders", protect, async (req, res, next) => {
+app.get("/orders", async (req, res, next) => {
   console.log('get /orders');
   console.log( req.query );
   const orders = square.getOrders( req.query );
