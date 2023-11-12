@@ -18,8 +18,7 @@ if (params.startAt == undefined ) {
 if (params.endAt == undefined ) {
   params.endAt = '2023-11-05T23:59:00';  
 }
-console.log("Attempt to search orders");
-console.log( params );
+
 try {
   const response = await client.ordersApi.searchOrders({
     locationIds: [
@@ -77,6 +76,7 @@ try {
               ticket_type = ticket_type.replace("FAMILY ", "FAMILY of ");
               ticket_type = ticket_type.replace("NextGen 18-21", "Next Gen (18-23)");
               ticket_type = ticket_type.replace("NextGen 18-23", "Next Gen (18-23)");
+              ticket_type = ticket_type.replace("CUSTOM AMOUNT", "Other");
             } else {
               console.log('Not a ticket');
             }
@@ -88,12 +88,12 @@ try {
 
             if ( ticketData[ticket_type] == undefined ) {
               ticketData[ticket_type] = {};
-              ticketData[ticket_type].qty = 0;
-              ticketData[ticket_type].gross = 0;
-              ticketData[ticket_type].discount = 0;
-              ticketData[ticket_type].price = 0;
-              ticketData[ticket_type].variation_price = 0;
-              ticketData[ticket_type].tax = 0;              
+              ticketData[ticket_type].qty = parseInt(ticket_qty);
+              ticketData[ticket_type].gross = parseFloat(ticket_gross.amount);
+              ticketData[ticket_type].discount = parseFloat(ticket_discount.amount);
+              ticketData[ticket_type].price = parseFloat(ticket_base_price.amount);
+              ticketData[ticket_type].variation_price = parseFloat(ticket_variation_price.amount);
+              ticketData[ticket_type].tax = parseFloat(ticket_tax.amount);              
             } else {
               ticketData[ticket_type].qty = ticketData[ticket_type].qty + parseInt(ticket_qty);
               ticketData[ticket_type].gross = ticketData[ticket_type].gross + parseFloat(ticket_gross.amount);

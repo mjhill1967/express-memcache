@@ -10,6 +10,8 @@ const responseTime = require("response-time");
 const winston = require("winston");
 const config = require("./config");
 const square = require('./utils/getOrders');
+const locs = require('./utils/getLocations');
+
 // const orderData = require('./routers/ordersrouter'); 
 // configure the application
 const app = express();
@@ -97,6 +99,17 @@ app.get("/orders", async (req, res, next) => {
   .catch(err => {
     res.status(500).json(err);
   })  
+});
+
+app.get("/locations", async (req, res, next) => {
+  console.log('get /locations');
+  const locations = locs.getLocations( req.query );
+  locations.then( data => {
+    res.status(200).json(data);
+  } )
+  .catch( err => {
+    res.status(500).json(err);
+  } )    
 });
 
 Object.keys(config.proxies).forEach((path) => {
