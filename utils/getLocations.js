@@ -13,7 +13,14 @@ console.log("Attempt to return locations");
 
 try {
     const response = await client.locationsApi.listLocations()
-    return response.result;
+    const result = response.result.locations
+    let loc = []
+        for (let i = 0; i < result.length; i++) {
+            loc[i] = {};
+            loc[i].id = result[i].id;
+            loc[i].name = result[i].name;
+        }
+    return loc;
 } catch( error)  {
     const errBody = JSON.parse(error.body);
     const errorDetails = errBody.errors[0];
