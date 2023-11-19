@@ -7,10 +7,14 @@ const client = new Client({
   environment: Environment.Production,
 });
 
-exports.getOrders = async ( params ) => { 
 
+exports.getOrders = async ( params ) => { 
+  
 if (params.location == undefined ) {
-  params.location = 'LJZAMNQFK7X0V';  
+  params.location = [ 'LJZAMNQFK7X0V' ];  
+} else {
+  query_str = params.location;
+  params.location = query_str.split(',');
 }
 if (params.startAt == undefined ) {
   params.startAt = '2023-11-05T00:00:00';  
@@ -21,9 +25,9 @@ if (params.endAt == undefined ) {
 
 try {
   const response = await client.ordersApi.searchOrders({
-    locationIds: [
+    locationIds: 
       params.location
-    ],
+    ,
     query: {
       filter: {
         stateFilter: {
@@ -108,7 +112,7 @@ try {
             txtOutput = txtOutput + '<div style="padding:2px;"><strong>' + data[x] + '</div>' ;
             x = x + 1;
           } else {
-            console.log('Name is undefined');
+            console.log('Item name is undefined');
             if ( ticketItems[j].itemType == 'CUSTOM_AMOUNT' ) {
               txtOutput = txtOutput + '*** Custom amount' + ' x ' + ticket_qty + '<br/>' ;
               data[ x ] = 'Custom amount' + ';' + ticket_qty + ';'
