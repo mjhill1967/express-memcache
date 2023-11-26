@@ -10,6 +10,7 @@ const responseTime = require("response-time");
 const winston = require("winston");
 const config = require("./config");
 const square = require('./utils/getOrders');
+const woo = require('./utils/getWCOrders');
 const locs = require('./utils/getLocations');
 
 // const orderData = require('./routers/ordersrouter'); 
@@ -94,6 +95,32 @@ app.get("/orders", async (req, res, next) => {
   const orders = square.getOrders( req.query );
 
   orders.then(data => {
+    res.status(200).json(data);
+  })
+  .catch(err => {
+    res.status(500).json(err);
+  })  
+});
+
+app.get("/products", async (req, res, next) => {
+  console.log('get /products');
+  // console.log( req.query );
+  const products = woo.getProducts( req.query );
+  console.log(products);
+  products.then(data => {
+    res.status(200).json(data);
+  })
+  .catch(err => {
+    res.status(500).json(err);
+  })  
+});
+
+app.get("/productorders", async (req, res, next) => {
+  console.log('get /productorders');
+  // console.log( req.query );
+  const productorders = woo.getProductOrders( req.query );
+  console.log(productorders);
+  productorders.then(data => {
     res.status(200).json(data);
   })
   .catch(err => {
