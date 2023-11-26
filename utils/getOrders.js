@@ -112,7 +112,7 @@ try {
             txtOutput = txtOutput + '<div style="padding:2px;"><strong>' + data[x] + '</div>' ;
             x = x + 1;
           } else {
-            console.log( 'Item name is undefined ' + ticket_text );
+          
             if ( ticketItems[j].itemType == 'CUSTOM_AMOUNT' ) {
               txtOutput = txtOutput + '*** Custom amount' + ' x ' + ticket_qty + '<br/>' ;
               data[ x ] = 'Custom amount' + ';' + ticket_qty + ';'
