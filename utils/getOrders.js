@@ -69,8 +69,10 @@ try {
 				
 				if ( ticketItems[j] != undefined ) { 
           let ticket_qty = ticketItems[j].quantity
-          if ( ticketItems[j].name != undefined ) {
-            let ticket_text = ticketItems[j].name;
+          let ticket_text = ticketItems[j].name;
+            if ( ticket_text == undefined ) { 
+              ticket_text = "Custom amount"; 
+            }
             let ticket_type = ticket_text;
             if ( params.location == 'LJZAMNQFK7X0V' ) {
               ticket_type = ticket_text.replace(" Match ticket", "");
@@ -111,14 +113,6 @@ try {
             data[ x ] = ticket_type + ';' + ticket_qty + ';' + ticket_tax.amount + ';' + ticket_gross.amount + ';' + ticket_discount.amount + ';' + ticket_base_price.amount + ';' + ticket_variation_price.amount + ';';
             txtOutput = txtOutput + '<div style="padding:2px;"><strong>' + data[x] + '</div>' ;
             x = x + 1;
-          } else {
-          
-           // if ( ticketItems[j].itemType == 'CUSTOM_AMOUNT' ) {
-           //   txtOutput = txtOutput + '*** Custom amount' + ' x ' + ticket_qty + '<br/>' ;
-              data[ x ] = 'Custom amount' + ';' + ticket_qty + ';'
-              x = x + 1;
-           // } else { console.log( ticketItems[j] ); }
-          }
           
 				}
 				
