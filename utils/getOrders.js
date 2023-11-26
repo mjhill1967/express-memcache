@@ -113,11 +113,11 @@ try {
             x = x + 1;
           } else {
           
-            if ( ticketItems[j].itemType == 'CUSTOM_AMOUNT' ) {
-              txtOutput = txtOutput + '*** Custom amount' + ' x ' + ticket_qty + '<br/>' ;
+           // if ( ticketItems[j].itemType == 'CUSTOM_AMOUNT' ) {
+           //   txtOutput = txtOutput + '*** Custom amount' + ' x ' + ticket_qty + '<br/>' ;
               data[ x ] = 'Custom amount' + ';' + ticket_qty + ';'
               x = x + 1;
-            } else { console.log( ticketItems[j] ); }
+           // } else { console.log( ticketItems[j] ); }
           }
           
 				}
