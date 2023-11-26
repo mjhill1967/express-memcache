@@ -83,8 +83,6 @@ try {
               ticket_type = ticket_type.replace("NextGen 18-21", "Next Gen (18-23)");
               ticket_type = ticket_type.replace("NextGen 18-23", "Next Gen (18-23)");
               ticket_type = ticket_type.replace("CUSTOM AMOUNT", "Other");
-            } else {
-            //  console.log('Not a ticket');
             }
             let ticket_tax = ticketItems[j].totalTaxMoney;
             let ticket_gross = ticketItems[j].totalMoney;
