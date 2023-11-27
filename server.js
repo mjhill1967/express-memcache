@@ -127,7 +127,12 @@ app.get("/productorders", async (req, res, next) => {
     console.log( "Net:", data.info.net );
     console.log( "Tax:", data.info.tax );
     console.log( "Total pages returned:", data.info.pages );
-    console.log( data.info );
+    res.set({
+      'Data-Quantity': data.info.qty,
+      'Data-Pages': data.info.pages,
+      'Data-Net': data.info.net,
+      'Data-Tax': data.info.tax,
+    })
     res.status(200).json( data );
   })
   .catch( err => {
