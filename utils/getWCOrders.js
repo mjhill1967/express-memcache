@@ -3,8 +3,8 @@ const WooCommerceRestApi = require("@woocommerce/woocommerce-rest-api").default;
 
 const api = new WooCommerceRestApi({
   url: 'https://fanzone.stalbanscityfc.com',
-  consumerKey: 'ck_a87d5ce43359bc7a4b9cb5b36e3ef3f4a228a405',
-  consumerSecret: 'cs_4c6a7b34c1d55273f94a79410c509e389863fecf',
+  consumerKey: process.env.CONSUMER_KEY,
+  consumerSecret: process.env.CONSUMER_SECRET,
   version: 'wc/v3'
 });
 
