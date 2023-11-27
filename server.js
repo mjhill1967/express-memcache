@@ -122,17 +122,6 @@ app.get("/productorders", async (req, res, next) => {
     }
   const productorders = woo.getProductOrders( req.query );
   productorders.then( data => {
-    total_pages = data.info.pages;
-    console.log( "Items:", data.info.qty );
-    console.log( "Net:", data.info.net );
-    console.log( "Tax:", data.info.tax );
-    console.log( "Total pages returned:", data.info.pages );
-    res.header({
-      'Data-Quantity': data.info.qty,
-      'Data-Pages': data.info.pages,
-      'Data-Net': data.info.net,
-      'Data-Tax': data.info.tax,
-    })
     res.status(200).json( data );
   })
   .catch( err => {

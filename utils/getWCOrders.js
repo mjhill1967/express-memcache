@@ -86,11 +86,12 @@ exports.getProductOrders = async ( params ) => {
                 }
                 orderitem.push( data );
             }
-            orderitem.info = {};
-            orderitem.info.pages = total_pages;
-            orderitem.info.qty = total_qty;
-            orderitem.info.net = total_net;
-            orderitem.info.tax = total_tax;
+            var info = {};
+            info.pages = total_pages;
+            info.qty = total_qty;
+            info.net = total_net;
+            info.tax = total_tax;
+            orderitem.push( info );
             return orderitem;
 
     } catch(error) {
