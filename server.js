@@ -117,15 +117,23 @@ app.get("/products", async (req, res, next) => {
 
 app.get("/productorders", async (req, res, next) => {
   console.log('get /productorders');
-  // console.log( req.query );
+    if ( req.query.page == undefined ) {
+      req.query.page = 1;
+    }
   const productorders = woo.getProductOrders( req.query );
-  console.log(productorders);
-  productorders.then(data => {
+  productorders.then( data => {
+    total_pages = data.pages;
+    console.log( "Items:", data.qty );
+    console.log( "Net:", data.net );
+    console.log( "Tax:", data.tax );
+    console.log( "Total pages returned:", data.pages );
+
     res.status(200).json(data);
   })
-  .catch(err => {
+  .catch( err => {
     res.status(500).json(err);
-  })  
+  })
+
 });
 
 app.get("/locations", async (req, res, next) => {

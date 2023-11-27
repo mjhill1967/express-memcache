@@ -41,26 +41,57 @@ exports.getProducts = async ( params ) => {
     }
 }
 
+
+
 exports.getProductOrders = async ( params ) => {
     try{
         const response = await api.get("orders", {
-            per_page: 50, // 20 products per page
+            per_page: 50, // 50 products per page
             product: params.product_id,
+            page: params.page,
             })
-            console.log("Response Status:", response.status);
-            console.log("Response Headers:", response.headers);
+            // console.log("Response Status:", response.status);
+            // console.log("Response Headers:", response.headers);
             console.log("Total of pages:", response.headers['x-wp-totalpages']);
             console.log("Total of orders:", response.headers['x-wp-total']);
             const result = response.data;
-            // console.log(result);
-            let orderitem = []
-            for (let i = 0; i < result.length; i++) {
-                orderitem[i] = {};
-                orderitem[i].id = result[i].id;
-                orderitem[i].channel = result[i].created_via;
-                orderitem[i].total = result[i].total;
+            const total_pages = response.headers['x-wp-totalpages'];
+            console.log("Total pages:", total_pages );
+            console.log( "Current page:", params.page );
+
+            var orderitem = []
+            var total_qty = 0;
+            var total_net = 0;
+            var total_tax = 0;
+
+            for ( let i = 0; i < result.length; i++) {
+                let data = {};
+                data.id = result[i].id;
+                data.channel = result[i].created_via;
+                data.total = result[i].total;
+                data.status = result[i].status;
+                data.payment_method = result[i].payment_method;
+                data.items = [];
+                for ( let j = 0; j < result[i].line_items.length; j++) {
+                    item = {};
+                    item.name = result[i].line_items[j].name;
+                    item.product_id = result[i].line_items[j].product_id;
+                    item.qty = result[i].line_items[j].quantity;
+                    total_qty = total_qty + item.qty;
+                    item.net = result[i].line_items[j].subtotal;
+                    total_net = total_net + parseInt(item.net);
+                    item.tax = result[i].line_items[j].subtotal_tax;
+                    total_tax = total_tax + parseInt(item.tax);
+                    if ( params.product_id == item.product_id ) {
+                        data.items.push( item );
+                    }
+                }
+                orderitem.push( data );
             }
-            console.log( orderitem );
+            orderitem.pages = total_pages;
+            orderitem.qty = total_qty;
+            orderitem.net = total_net;
+            orderitem.tax = total_tax;
             return orderitem;
 
     } catch(error) {
@@ -70,4 +101,7 @@ exports.getProductOrders = async ( params ) => {
         console.log("Product orders error " + errorDetails.statusCode);
         return errorDetails;
     }
+    // console.log("Now get page:",current_page);
+    // getProductOrders( { page: current_page } );
+
 }
