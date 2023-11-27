@@ -86,10 +86,11 @@ exports.getProductOrders = async ( params ) => {
                 }
                 orderitem.push( data );
             }
-            orderitem.pages = total_pages;
-            orderitem.qty = total_qty;
-            orderitem.net = total_net;
-            orderitem.tax = total_tax;
+            orderitem.info = {};
+            orderitem.info.pages = total_pages;
+            orderitem.info.qty = total_qty;
+            orderitem.info.net = total_net;
+            orderitem.info.tax = total_tax;
             return orderitem;
 
     } catch(error) {

@@ -122,12 +122,12 @@ app.get("/productorders", async (req, res, next) => {
     }
   const productorders = woo.getProductOrders( req.query );
   productorders.then( data => {
-    total_pages = data.pages;
-    console.log( "Items:", data.qty );
-    console.log( "Net:", data.net );
-    console.log( "Tax:", data.tax );
-    console.log( "Total pages returned:", data.pages );
-    console.log( data );
+    total_pages = data.info.pages;
+    console.log( "Items:", data.info.qty );
+    console.log( "Net:", data.info.net );
+    console.log( "Tax:", data.info.tax );
+    console.log( "Total pages returned:", data.info.pages );
+    console.log( data.info );
     res.status(200).json( data );
   })
   .catch( err => {
