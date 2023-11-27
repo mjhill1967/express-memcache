@@ -41,8 +41,6 @@ exports.getProducts = async ( params ) => {
     }
 }
 
-
-
 exports.getProductOrders = async ( params ) => {
     try{
         const response = await api.get("orders", {

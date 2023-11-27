@@ -127,11 +127,11 @@ app.get("/productorders", async (req, res, next) => {
     console.log( "Net:", data.net );
     console.log( "Tax:", data.tax );
     console.log( "Total pages returned:", data.pages );
-
-    res.status(200).json(data);
+    console.log( data );
+    res.status(200).json( data );
   })
   .catch( err => {
-    res.status(500).json(err);
+    res.status(500).json( err );
   })
 
 });
