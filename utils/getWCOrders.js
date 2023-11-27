@@ -84,6 +84,7 @@ exports.getProductOrders = async ( params ) => {
                         data.items.push( item );
                     }
                 }
+
                 orderitem.push( data );
             }
             var info = {};
