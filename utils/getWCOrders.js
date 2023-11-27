@@ -91,6 +91,7 @@ exports.getProductOrders = async ( params ) => {
             info.qty = total_qty;
             info.net = total_net;
             info.tax = total_tax;
+            info.id = params.product_id;
             orderitem.push( info );
             return orderitem;
 
