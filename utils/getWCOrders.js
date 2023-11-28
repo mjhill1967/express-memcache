@@ -84,8 +84,9 @@ exports.getProductOrders = async ( params ) => {
                         data.items.push( item );
                     }
                 }
-
-                orderitem.push( data );
+                if ( data.status == 'completed' || data.status == 'processing') {
+                    orderitem.push( data );
+                }
             }
             var info = {};
             info.pages = total_pages;
