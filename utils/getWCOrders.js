@@ -69,22 +69,22 @@ exports.getProductOrders = async ( params ) => {
                 data.total = result[i].total;
                 data.status = result[i].status;
                 data.payment_method = result[i].payment_method;
-                data.items = [];
-                for ( let j = 0; j < result[i].line_items.length; j++) {
-                    item = {};
-                    item.name = result[i].line_items[j].name;
-                    item.product_id = result[i].line_items[j].product_id;
-                    item.qty = result[i].line_items[j].quantity;
-                    total_qty = total_qty + item.qty;
-                    item.net = result[i].line_items[j].subtotal;
-                    total_net = total_net + parseInt(item.net);
-                    item.tax = result[i].line_items[j].subtotal_tax;
-                    total_tax = total_tax + parseInt(item.tax);
-                    if ( params.product_id == item.product_id ) {
-                        data.items.push( item );
-                    }
-                }
                 if ( data.status == 'completed' || data.status == 'processing') {
+                    data.items = [];
+                    for ( let j = 0; j < result[i].line_items.length; j++) {
+                        item = {};
+                        item.name = result[i].line_items[j].name;
+                        item.product_id = result[i].line_items[j].product_id;
+                        item.qty = result[i].line_items[j].quantity;
+                        total_qty = total_qty + item.qty;
+                        item.net = result[i].line_items[j].subtotal;
+                        total_net = total_net + parseInt(item.net);
+                        item.tax = result[i].line_items[j].subtotal_tax;
+                        total_tax = total_tax + parseInt(item.tax);
+                        if ( params.product_id == item.product_id ) {
+                            data.items.push( item );
+                        }
+                    }                    
                     orderitem.push( data );
                 }
             }
