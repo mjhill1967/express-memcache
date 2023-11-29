@@ -91,7 +91,13 @@ app.get("/status", (request, response) => {
 
 app.get("/orders", async (req, res, next) => {
   console.log('get /orders');
-  console.log( req.query );
+  console.log(req.query);
+  // console.log( req.query );
+  if ( req.query == 'bars' ) {
+    params.location = process.env.BARS_POS;
+    console.log( params.location );
+  }
+
   const orders = square.getOrders( req.query );
 
   orders.then(data => {

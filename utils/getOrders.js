@@ -9,9 +9,21 @@ const client = new Client({
 
 
 exports.getOrders = async ( params ) => { 
-  
+  console.log( params );
 if (params.location == undefined ) {
   params.location = [ 'LJZAMNQFK7X0V' ];  
+} else if ( params.location == 'turnstiles' ) {
+  console.log("Turnstiles");
+  params.location = JSON.parse(process.env.TURNSTILES_POS);  
+} else if ( params.location == 'bars' ) {
+  console.log("Bars");
+  params.location = JSON.parse(process.env.BARS_POS);
+} else if ( params.location == 'food' ) {
+  console.log("Food");
+  params.location = JSON.parse(process.env.FOOD_POS);
+} else if ( params.location == 'retail' ) {
+  console.log("Retail");
+  params.location = JSON.parse(process.env.RETAIL_POS);    
 } else {
   query_str = params.location;
   params.location = query_str.split(',');
@@ -26,8 +38,7 @@ if (params.endAt == undefined ) {
 try {
   const response = await client.ordersApi.searchOrders({
     locationIds: 
-      params.location
-    ,
+      params.location,
     query: {
       filter: {
         stateFilter: {
