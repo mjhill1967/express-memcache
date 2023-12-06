@@ -90,6 +90,7 @@ exports.getProductOrders = async ( params ) => {
             }
             var info = {};
             info.pages = total_pages;
+            info.thispage = params.page;
             info.qty = total_qty;
             info.net = total_net;
             info.tax = total_tax;
