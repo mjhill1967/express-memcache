@@ -70,9 +70,7 @@ try {
   // console.log(params.location);
   locations = params.location;
   var _updata = [];
-
   // console.log( "This query is " + params.byLoc );
-
   if ( _sqdata.length > -1 ) {
     if ( params.byLoc ) {
       for (let h = 0; h < locations.length; h++) {
