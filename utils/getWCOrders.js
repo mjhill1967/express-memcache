@@ -81,9 +81,9 @@ exports.getProductOrders = async ( params ) => {
                         total_qty = total_qty + item.qty;
                         item.total = result[i].line_items[j].total;
                         item.net = result[i].line_items[j].subtotal;
-                        total_net = total_net + parsefloat(item.net);
+                        total_net = total_net + parseFloat(item.net);
                         item.tax = result[i].line_items[j].subtotal_tax;
-                        total_tax = total_tax + parsefloat(item.tax);
+                        total_tax = total_tax + parseFloat(item.tax);
                         if ( item.total != item.net ) {
                             console.log(result[i].line_items);
                         }
