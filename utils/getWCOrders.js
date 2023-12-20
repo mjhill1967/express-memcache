@@ -67,24 +67,23 @@ exports.getProductOrders = async ( params ) => {
                 data.id = result[i].id;
                 data.channel = result[i].created_via;
                 data.total = result[i].total;
-                data.discount_total = result[i].discount_total;
-                data.discount_tax = result[i].discount_tax;
+                data.discount_total = parsefloat( result[i].discount_total ) + parsefloat( result[i].discount_tax );
+                data.coupons = result[i].coupon_lines;
                 data.status = result[i].status;
                 data.payment_method = result[i].payment_method;
                 if ( data.status == 'completed' || data.status == 'processing') {
                     data.items = [];
                     for ( let j = 0; j < result[i].line_items.length; j++) {
                         item = {};
-
                         item.name = result[i].line_items[j].name;
                         item.product_id = result[i].line_items[j].product_id;
                         item.qty = result[i].line_items[j].quantity;
                         total_qty = total_qty + item.qty;
                         item.total = result[i].line_items[j].total;
                         item.net = result[i].line_items[j].subtotal;
-                        total_net = total_net + parseInt(item.net);
+                        total_net = total_net + parsefloat(item.net);
                         item.tax = result[i].line_items[j].subtotal_tax;
-                        total_tax = total_tax + parseInt(item.tax);
+                        total_tax = total_tax + parsefloat(item.tax);
                         if ( item.total != item.net ) {
                             console.log(result[i].line_items);
                         }
