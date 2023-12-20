@@ -63,7 +63,7 @@ try {
     }
   });
   _sqdata = response.result.orders;
-  if ( _sqdata== undefined ) {
+  if ( _sqdata == undefined ) {
     _sqdata = [];
   } 
   // console.log('Found ' + _sqdata.length + ' records');
