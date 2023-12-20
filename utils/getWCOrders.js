@@ -67,7 +67,7 @@ exports.getProductOrders = async ( params ) => {
                 data.id = result[i].id;
                 data.channel = result[i].created_via;
                 data.total = result[i].total;
-                data.discount_total = parsefloat( result[i].discount_total ) + parsefloat( result[i].discount_tax );
+                data.discount_total = parseFloat( result[i].discount_total ) + parseFloat( result[i].discount_tax );
                 data.coupons = result[i].coupon_lines;
                 data.status = result[i].status;
                 data.payment_method = result[i].payment_method;
