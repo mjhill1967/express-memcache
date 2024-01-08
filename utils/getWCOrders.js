@@ -50,17 +50,20 @@ exports.getProductOrders = async ( params ) => {
             })
             // console.log("Response Status:", response.status);
             // console.log("Response Headers:", response.headers);
-            console.log("Total of pages:", response.headers['x-wp-totalpages']);
-            console.log("Total of orders:", response.headers['x-wp-total']);
+            // console.log("Total of pages:", response.headers['x-wp-totalpages']);
+            // console.log("Total of orders:", response.headers['x-wp-total']);
             const result = response.data;
             const total_pages = response.headers['x-wp-totalpages'];
-            console.log("Total pages:", total_pages );
-            console.log( "Current page:", params.page );
+            // console.log("Total pages:", total_pages );
+            // console.log( "Current page:", params.page );
 
             var orderitem = []
             var total_qty = 0;
             var total_net = 0;
             var total_tax = 0;
+            var subtotal_net = 0;
+            var subtotal_tax = 0;
+
 
             for ( let i = 0; i < result.length; i++) {
                 let data = {};
@@ -71,20 +74,36 @@ exports.getProductOrders = async ( params ) => {
                 data.coupons = result[i].coupon_lines;
                 data.status = result[i].status;
                 data.payment_method = result[i].payment_method;
+             //   if ( data.discount_total > 0 ) {
+             //       console.table( data.coupons );
+             //       console.log( data.discount_total );
+             //       console.log( data.total );
+             //   }
                 if ( data.status == 'completed' || data.status == 'processing') {
                     data.items = [];
                     for ( let j = 0; j < result[i].line_items.length; j++) {
                         item = {};
+
+                      //  console.log(result[i].line_items[j].name);
+                      //  console.log(result[i].line_items[j].quantity);
+                      //  console.log(result[i].line_items[j].total);
+                      //  console.log(result[i].line_items[j].subtotal);
+
                         item.name = result[i].line_items[j].name;
                         item.product_id = result[i].line_items[j].product_id;
                         item.qty = result[i].line_items[j].quantity;
                         total_qty = total_qty + item.qty;
                         item.total = result[i].line_items[j].total;
-                        item.net = result[i].line_items[j].subtotal;
+                        item.subtotal = result[i].line_items[j].subtotal;
+                        item.net = result[i].line_items[j].total;
                         total_net = total_net + parseFloat(item.net);
-                        item.tax = result[i].line_items[j].subtotal_tax;
+                        subtotal_net = subtotal_net + parseFloat(item.subtotal);
+                        item.tax = result[i].line_items[j].total_tax;
+                        item.subtotal_tax = result[i].line_items[j].subtotal_tax;
+                        subtotal_tax = subtotal_tax + parseFloat(item.subtotal_tax);
                         total_tax = total_tax + parseFloat(item.tax);
                         if ( item.total != item.net ) {
+                            console.log('Total different to sub-total');
                             console.log(result[i].line_items);
                         }
                         if ( params.product_id == item.product_id ) {
@@ -100,18 +119,21 @@ exports.getProductOrders = async ( params ) => {
             info.qty = total_qty;
             info.net = total_net;
             info.tax = total_tax;
+            info.subtotal_net = subtotal_net;
+            info.subtotal_tax = subtotal_tax;
             info.id = params.product_id;
+            console.table( info );
             orderitem.push( info );
             return orderitem;
 
-    } catch(error) {
+    } catch( error ) {
         const errBody = JSON.parse(error.body);
         const errorDetails = errBody.errors[0];
         errorDetails.statusCode = error.statusCode;
         console.log("Product orders error " + errorDetails.statusCode);
         return errorDetails;
     }
-    // console.log("Now get page:",current_page);
-    // getProductOrders( { page: current_page } );
+    console.log("Now get page:", current_page);
+    getProductOrders( { page: current_page } );
 
 }
