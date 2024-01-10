@@ -122,7 +122,7 @@ exports.getProductOrders = async ( params ) => {
             info.subtotal_net = subtotal_net;
             info.subtotal_tax = subtotal_tax;
             info.id = params.product_id;
-            console.table( info );
+            // console.table( info );
             orderitem.push( info );
             return orderitem;
 
