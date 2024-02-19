@@ -37,9 +37,14 @@ if (params.endAt == undefined ) {
 if (params.byLoc == undefined ) {
   params.byLoc = false;
 }
+if (params.cursor == undefined ) {
+  params.cursor = '';
+}
 
 try {
   const response = await client.ordersApi.searchOrders({
+    cursor:
+      params.cursor,    
     locationIds: 
       params.location,
     query: {
@@ -63,24 +68,25 @@ try {
     }
   });
   _sqdata = response.result.orders;
+  let _cursor = response.result.cursor;
   if ( _sqdata == undefined ) {
     _sqdata = [];
   } 
-  // console.log('Found ' + _sqdata.length + ' records');
-  // console.log(params.location);
+  console.log('Found ' + _sqdata.length + ' records');
   locations = params.location;
   var _updata = [];
-  // console.log( "This query is " + params.byLoc );
   if ( _sqdata.length > -1 ) {
     if ( params.byLoc ) {
       for (let h = 0; h < locations.length; h++) {
-        // console.log( "This location is ID " + locations[h] );
+        console.log( "This location is ID " + locations[h] );
         _updata[h] = getData( _sqdata, params, locations[h] );
       }
       return _updata;
     } else {
-        // console.log("All locations");
         _updata = getData( _sqdata, params, "all" );
+        if ( _cursor != undefined ) {
+          _updata.cursor = _cursor;
+        }
       return _updata;
     }
 
@@ -102,10 +108,13 @@ function getData( tickets, params, loc ) {
   var ticketData = {};
   var ticketItems = [];
   var l = "all";
+  // console.log("Number of items is " + tickets.length );
 	for ( let i = 0; i < tickets.length; i++ ) {
     // console.log( tickets[i].locationId );
 		ticketItems = tickets[i].lineItems;
+		
 		if ( ticketItems != undefined ) {
+        // console.log( ticketItems );      
         l = tickets[i].locationId;
         if ( loc == "all" ) { 
           l = loc; 
@@ -153,9 +162,9 @@ function getData( tickets, params, loc ) {
               ticketData[ticket_type].tax = ticketData[ticket_type].tax + parseFloat(ticket_tax.amount);
               ticketData[ticket_type].location_id = tickets[i].locationId;
             }
-          
+            // console.log("Completed " + i);
 				} else {
-          // console.log("No match for location " + l );
+          console.log("No match for location " + l );
         }
 				
 			}
@@ -164,5 +173,6 @@ function getData( tickets, params, loc ) {
 		
 	}
     console.log('Success');
+
     return ticketData;
 }

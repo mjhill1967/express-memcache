@@ -12,6 +12,7 @@ const config = require("./config");
 const square = require('./utils/getOrders');
 const woo = require('./utils/getWCOrders');
 const locs = require('./utils/getLocations');
+const costs = require('./utils/getLabourCosts');
 
 // const orderData = require('./routers/ordersrouter'); 
 // configure the application
@@ -91,12 +92,7 @@ app.get("/status", (request, response) => {
 
 app.get("/orders", async (req, res, next) => {
   console.log('get /orders');
-  console.log(req.query);
   // console.log( req.query );
-  if ( req.query == 'bars' ) {
-    params.location = process.env.BARS_POS;
-    console.log( params.location );
-  }
 
   const orders = square.getOrders( req.query );
 
@@ -112,7 +108,7 @@ app.get("/products", async (req, res, next) => {
   console.log('get /products');
   // console.log( req.query );
   const products = woo.getProducts( req.query );
-  console.log(products);
+  
   products.then(data => {
     res.status(200).json(data);
   })
@@ -140,6 +136,18 @@ app.get("/locations", async (req, res, next) => {
   console.log('get /locations');
   const locations = locs.getLocations( req.query );
   locations.then( data => {
+    res.status(200).json(data);
+  } )
+  .catch( err => {
+    res.status(500).json(err);
+  } )    
+});
+
+app.get("/labourcosts", async (req, res, next) => {
+  console.log('get /labourcosts');
+
+  const labourcosts = costs.getLabourCosts( req.query );
+  labourcosts.then( data => {
     res.status(200).json(data);
   } )
   .catch( err => {
