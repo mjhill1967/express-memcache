@@ -107,7 +107,7 @@ function getData( tickets, params, loc ) {
   var ticketData = {};
   var ticketItems = [];
   var l = "all";
-  // console.log("Number of items is " + tickets.length );
+  console.log("Number of items is " + tickets.length );
 	for ( let i = 0; i < tickets.length; i++ ) {
     // console.log( tickets[i].locationId );
 		ticketItems = tickets[i].lineItems;
@@ -161,7 +161,7 @@ function getData( tickets, params, loc ) {
               ticketData[ticket_type].tax = ticketData[ticket_type].tax + parseFloat(ticket_tax.amount);
               ticketData[ticket_type].location_id = tickets[i].locationId;
             }
-            // console.log("Completed " + i);
+            console.log("Completed " + i);
 				} else {
           console.log("No match for location " + l );
         }
@@ -208,7 +208,7 @@ if (params.cursor == undefined ) {
 }
 
   try {
-
+    var _updata = [];
     let listOrdersResponse = await client.ordersApi.searchOrders({
     cursor: undefined,
     limit: limit,    
@@ -233,23 +233,20 @@ if (params.cursor == undefined ) {
       }      
     }
   });
-    var _updata = [];
+
     while (!isEmpty(listOrdersResponse.result)) {
       let orders = listOrdersResponse.result.orders;
       locations = params.location;
 
       if ( params.byLoc ) {
         for (let h = 0; h < locations.length; h++) {
-          console.log( "This location is ID " + locations[h] );
+          // console.log( "This location is ID " + locations[h] );
           _updata[h] = getData( _sqdata, params, locations[h] );
         }
       } else {
-        _updata = getData( orders, params, "all" );
+        _dataset = getData( orders, params, "all" );
+        _updata.push( _dataset );
       }
-
-   //   orders.forEach( function ( order ) {
-   //     console.log("order: ID: " + order.id );
-   //   });
 
       let cursor = listOrdersResponse.result.cursor;
       if ( cursor ) {
