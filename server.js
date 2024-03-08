@@ -104,6 +104,19 @@ app.get("/orders", async (req, res, next) => {
   })  
 });
 
+app.get("/v2/orders", async (req, res, next) => {
+  console.log('get /v2/orders');
+
+  const orders = square.listOrders( req.query );
+
+  orders.then(data => {
+    res.status(200).json(data);
+  })
+  .catch(err => {
+    res.status(500).json(err);
+  })  
+});
+
 app.get("/products", async (req, res, next) => {
   console.log('get /products');
   // console.log( req.query );

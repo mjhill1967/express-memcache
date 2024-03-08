@@ -7,7 +7,6 @@ const client = new Client({
   environment: Environment.Production,
 });
 
-
 exports.getOrders = async ( params ) => { 
 //  console.log( params );
 if (params.location == undefined ) {
@@ -99,7 +98,7 @@ try {
     errorDetails.statusCode = error.statusCode;
     console.log("Error " + errorDetails.statusCode);
     return errorDetails;
-}
+  }    
 
 }
 
@@ -175,4 +174,130 @@ function getData( tickets, params, loc ) {
     console.log('Success');
 
     return ticketData;
+}
+
+exports.listOrders = async ( params ) => {
+// async function listOrders() {
+  let limit = 500;
+//  console.log( params );
+if (params.location == undefined ) {
+  params.location = [ 'LJZAMNQFK7X0V' ];  
+} else if ( params.location == 'turnstiles' ) {
+  params.location = JSON.parse(process.env.TURNSTILES_POS);  
+} else if ( params.location == 'bars' ) {
+  params.location = JSON.parse(process.env.BARS_POS);
+} else if ( params.location == 'food' ) {
+  params.location = JSON.parse(process.env.FOOD_POS);
+} else if ( params.location == 'retail' ) {
+  params.location = JSON.parse(process.env.RETAIL_POS);    
+} else {
+  query_str = params.location;
+  params.location = query_str.split(',');
+}
+if (params.startAt == undefined ) {
+  params.startAt = '2023-11-05T00:00:00';  
+}
+if (params.endAt == undefined ) {
+  params.endAt = '2023-11-05T23:59:00';  
+}
+if (params.byLoc == undefined ) {
+  params.byLoc = false;
+}
+if (params.cursor == undefined ) {
+  params.cursor = '';
+}
+
+  try {
+
+    let listOrdersResponse = await client.ordersApi.searchOrders({
+    cursor: undefined,
+    limit: limit,    
+    locationIds: params.location,
+    query: {
+      filter: {
+        stateFilter: {
+          states: [
+            'COMPLETED'
+          ]
+        },
+        dateTimeFilter: {
+          closedAt: {
+            startAt: params.startAt,
+            endAt: params.endAt
+          }
+        }
+      },
+      sort: {
+        sortField: 'CLOSED_AT',
+        sortOrder: 'DESC'
+      }      
+    }
+  });
+    var _updata = [];
+    while (!isEmpty(listOrdersResponse.result)) {
+      let orders = listOrdersResponse.result.orders;
+      locations = params.location;
+
+      if ( params.byLoc ) {
+        for (let h = 0; h < locations.length; h++) {
+          console.log( "This location is ID " + locations[h] );
+          _updata[h] = getData( _sqdata, params, locations[h] );
+        }
+      } else {
+        _updata = getData( orders, params, "all" );
+      }
+
+   //   orders.forEach( function ( order ) {
+   //     console.log("order: ID: " + order.id );
+   //   });
+
+      let cursor = listOrdersResponse.result.cursor;
+      if ( cursor ) {
+        listOrdersResponse = await client.ordersApi.searchOrders({
+          cursor: cursor,
+          limit: limit,    
+          locationIds: params.location,
+          query: {
+            filter: {
+              stateFilter: {
+                states: [
+                  'COMPLETED'
+                ]
+              },
+              dateTimeFilter: {
+                closedAt: {
+                  startAt: params.startAt,
+                  endAt: params.endAt
+                }
+              }
+            },
+            sort: {
+              sortField: 'CLOSED_AT',
+              sortOrder: 'DESC'
+            }      
+          }
+      });
+      } else {
+        return _updata;
+        // break;
+      }
+    }
+
+  } catch (error) {
+    if (error instanceof ApiError) {
+      error.result.errors.forEach(function (e) {
+        console.log(e.category);
+        console.log(e.code);
+        console.log(e.detail);
+      });
+      return JSON.parse('API error. Please check logs');
+    } else {
+      console.log("Unexpected error occurred: ", error);
+      return JSON.parse('Unexpected error occurred: ' + error);
+    }
+  }
+};
+
+function isEmpty(obj) {
+  return !Object.keys(obj).length;
 }
