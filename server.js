@@ -13,6 +13,7 @@ const square = require('./utils/getOrders');
 const woo = require('./utils/getWCOrders');
 const locs = require('./utils/getLocations');
 const costs = require('./utils/getLabourCosts');
+const passes = require('./utils/generateSmartPass');
 
 // const orderData = require('./routers/ordersrouter'); 
 // configure the application
@@ -110,6 +111,19 @@ app.get("/v2/orders", async (req, res, next) => {
   const orders = square.listOrders( req.query );
 
   orders.then(data => {
+    res.status(200).json(data);
+  })
+  .catch(err => {
+    res.status(500).json(err);
+  })  
+});
+
+app.get("/passes", async (req, res, next) => {
+  console.log('get /passes');
+  // console.log( req.query );
+  const passLinks = passes.passkitURL( req.query );
+  
+  passLinks.then(data => {
     res.status(200).json(data);
   })
   .catch(err => {
