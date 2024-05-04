@@ -1,15 +1,13 @@
 var crypto = require('crypto');
 
 var fields = {
-    "members.tier.id": "standard",
+    "members.tier.id": "plus",
     "person.forename": "Test",
     "person.surname": "Person",
     "person.emailAddress": "mrmichaeljh@gmail.com",
-    "universal.expiryDate":"2024-05-31T22:59:59Z",
+    "universal.expiryDate":"2025-05-31T22:59:59Z",
     "members.member.externalId":"999000111222"
   }
-  
-  console.log(JSON.stringify(fields))
 
   const default_sig = process.env.PASSKIT_DEFAULT_SECRET
   const default_id = process.env.PASSKIT_DEFAULT_ID
@@ -32,9 +30,7 @@ exports.passkitURL = async ( params ) => {
     }
 
     const distributionUrl = params.url + params.id
-    console.log( distributionUrl )
     let newpass_url = GenerateSmartPassLink( fields, distributionUrl, params.sig );
-    console.log( newpass_url )
     return newpass_url;
 }
 

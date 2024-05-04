@@ -15,7 +15,6 @@ const locs = require('./utils/getLocations');
 const costs = require('./utils/getLabourCosts');
 const passes = require('./utils/generateSmartPass');
 
-// const orderData = require('./routers/ordersrouter'); 
 // configure the application
 const app = express();
 const port = config.serverPort;
@@ -23,7 +22,6 @@ const secret = config.sessionSecret;
 const store = new session.MemoryStore();
 
 console.log('Server app');
-//app.set('view engine', 'ejs');
 
 const alwaysAllow = (_1, _2, next) => {
   next();
@@ -41,8 +39,8 @@ const protect = (req, res, next) => {
 
 app.disable("x-powered-by");
 
-app.use(helmet());
-app.use(responseTime());
+app.use( helmet() );
+app.use( responseTime() );
 app.use(
   expressWinston.logger({
     transports: [new winston.transports.Console()],
@@ -120,7 +118,7 @@ app.get("/v2/orders", async (req, res, next) => {
 
 app.get("/passes", async (req, res, next) => {
   console.log('get /passes');
-  // console.log( req.query );
+  console.log( req.query );
   const passLinks = passes.passkitURL( req.query );
   
   passLinks.then(data => {
@@ -180,6 +178,12 @@ app.get("/labourcosts", async (req, res, next) => {
   .catch( err => {
     res.status(500).json(err);
   } )    
+});
+
+app.post('/issueTickets', function(req, res) {
+  console.log('receiving data ...');
+  console.log('body is ',req.body);
+  res.send(req.body);
 });
 
 Object.keys(config.proxies).forEach((path) => {
