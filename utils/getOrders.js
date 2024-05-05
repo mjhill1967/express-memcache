@@ -288,10 +288,10 @@ if (params.cursor == undefined ) {
         console.log(e.code);
         console.log(e.detail);
       });
-      return JSON.parse('API error. Please check logs');
+      return 'API error. Please check logs';
     } else {
       console.log("Unexpected error occurred: ", error);
-      return JSON.parse('Unexpected error occurred: ' + error);
+      return 'Unexpected error occurred: ' + error;
     }
   }
 };
