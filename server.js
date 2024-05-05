@@ -109,6 +109,9 @@ app.get("/v2/orders", async (req, res, next) => {
   const orders = square.listOrders( req.query );
 
   orders.then(data => {
+    if ( updata == undefined ){
+      _updata = 'No data';
+    }    
     res.status(200).json(data);
   })
   .catch(err => {

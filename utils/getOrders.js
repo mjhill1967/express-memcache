@@ -71,13 +71,13 @@ try {
   if ( _sqdata == undefined ) {
     _sqdata = [];
   } 
-  console.log('Found ' + _sqdata.length + ' records');
+  // console.log('Found ' + _sqdata.length + ' records');
   locations = params.location;
   var _updata = [];
   if ( _sqdata.length > -1 ) {
     if ( params.byLoc ) {
       for (let h = 0; h < locations.length; h++) {
-        console.log( "This location is ID " + locations[h] );
+      //  console.log( "This location is ID " + locations[h] );
         _updata[h] = getData( _sqdata, params, locations[h] );
       }
       return _updata;
@@ -103,11 +103,11 @@ try {
 }
 
 function getData( tickets, params, loc ) {
-  console.log( params.location + " getData/loc=" + loc );
+  // console.log( params.location + " getData/loc=" + loc );
   var ticketData = {};
   var ticketItems = [];
   var l = "all";
-  console.log("Number of items is " + tickets.length );
+  // console.log("Number of items is " + tickets.length );
 	for ( let i = 0; i < tickets.length; i++ ) {
     // console.log( tickets[i].locationId );
 		ticketItems = tickets[i].lineItems;
@@ -180,7 +180,7 @@ function getData( tickets, params, loc ) {
 exports.listOrders = async ( params ) => {
 // async function listOrders() {
   let limit = 500;
-//  console.log( params );
+ // console.log( params );
 if (params.location == undefined ) {
   params.location = [ 'LJZAMNQFK7X0V' ];  
 } else if ( params.location == 'turnstiles' ) {
@@ -238,10 +238,10 @@ if (params.cursor == undefined ) {
     while (!isEmpty(listOrdersResponse.result)) {
       let orders = listOrdersResponse.result.orders;
       locations = params.location;
-
+      // console.log( locations );
       if ( params.byLoc ) {
         for (let h = 0; h < locations.length; h++) {
-          // console.log( "This location is ID " + locations[h] );
+           console.log( "This location is ID " + locations[h] );
           _updata[h] = getData( _sqdata, params, locations[h] );
         }
       } else {
@@ -288,10 +288,10 @@ if (params.cursor == undefined ) {
         console.log(e.code);
         console.log(e.detail);
       });
-      return 'API error. Please check logs';
+      return json.parse('API error. Please check logs');
     } else {
       console.log("Unexpected error occurred: ", error);
-      return 'Unexpected error occurred: ' + error;
+      return json.parse('Unexpected error occurred: ' + error);
     }
   }
 };
