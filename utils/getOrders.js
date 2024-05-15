@@ -131,8 +131,8 @@ function getData( tickets, params, loc ) {
               ticket_type = ticket_text.replace(" Match ticket", "");
               ticket_type = ticket_type.replace("Conc", "Concession");
               ticket_type = ticket_type.replace("U18", "Youth (12-17)");
-              ticket_type = ticket_type.replace("U12", "Child (Under 12)");
-              ticket_type = ticket_type.replace("U5", "Infant (Under 5)");
+              ticket_type = ticket_type.replace("U12", "Junior (5-11)");
+              ticket_type = ticket_type.replace("U5", "Infant (0-4)");
               ticket_type = ticket_type.replace("FAMILY ", "FAMILY of ");
               ticket_type = ticket_type.replace("NextGen 18-21", "Next Gen (18-23)");
               ticket_type = ticket_type.replace("NextGen 18-23", "Next Gen (18-23)");
